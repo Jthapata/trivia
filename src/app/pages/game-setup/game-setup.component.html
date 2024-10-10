@@ -1,0 +1,20 @@
+<div class="game-setup-container">
+  <h2>Game Setup</h2>
+
+  <!-- Number of Players Component -->
+  <app-number-of-players
+    (numberOfPlayersChange)="onNumberOfPlayersChange($event)"
+  ></app-number-of-players>
+
+  <!-- Selected Players Component -->
+  <app-selected-players
+    [numberOfPlayers]="numberOfPlayers"
+    [availableUsers$]="availableUsers$"
+    (selectedPlayersChange)="onSelectedPlayersChange($event)"
+  ></app-selected-players>
+
+  <!-- Start Game Button Component -->
+  <app-start-game-button
+    (startGame)="startGame()"
+  ></app-start-game-button>
+</div>

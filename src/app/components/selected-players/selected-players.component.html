@@ -1,0 +1,26 @@
+<div *ngIf="numberOfPlayers > 1">
+    <mat-form-field appearance="fill">
+      <mat-label>Select Players</mat-label>
+      <mat-select [formControl]="selectedPlayersControl" multiple>
+        <ng-container *ngIf="availableUsers$ | async as users; else loading">
+          <mat-option *ngFor="let user of users" [value]="user.id">
+            {{ user.email }}
+          </mat-option>
+        </ng-container>
+        <ng-template #loading>
+          <mat-option disabled>Loading users...</mat-option>
+        </ng-template>
+      </mat-select>
+      <!-- Validation errors -->
+      <mat-error *ngIf="selectedPlayersControl.hasError('required')">
+        Please select players
+      </mat-error>
+      <mat-error *ngIf="selectedPlayersControl.hasError('minlength')">
+        Select {{ numberOfPlayers }} players
+      </mat-error>
+      <mat-error *ngIf="selectedPlayersControl.hasError('maxlength')">
+        Select only {{ numberOfPlayers }} players
+      </mat-error>
+    </mat-form-field>
+  </div>
+  
