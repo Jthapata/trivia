@@ -1,0 +1,13 @@
+<mat-card>
+  <mat-card-title>Login</mat-card-title>
+    <mat-form-field>
+      <input matInput [formControl]="emailFC" type="email" placeholder="Email">
+      @if(emailInUseError) {
+        <mat-error>Email is already in use</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [formControl]="passwordFC" type="password" placeholder="Password">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="register()">Register</button>
+</mat-card>
