@@ -36,7 +36,7 @@ export class RegisterComponent {
     this.authService.register(this.emailFC.value!, this.passwordFC.value!)
       .subscribe({
         next: () => {
-          console.log('User registered')
+          this.router.navigate(['/game-setup'])
         },
         error: (error) => {
           if (error.code === 'auth/email-already-in-use') {

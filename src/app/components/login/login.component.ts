@@ -37,7 +37,7 @@ export class LoginComponent {
     this.authService.login(this.emailFC.value!, this.passwordFC.value!)
       .subscribe({
         next: () => {
-          console.log('User logged in')
+          this.router.navigate(['/game-setup'])
         },
         error: (error) => {
           console.log(error)
