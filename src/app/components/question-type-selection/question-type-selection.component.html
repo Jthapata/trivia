@@ -1,0 +1,15 @@
+<mat-form-field appearance="fill">
+    <mat-label>Question Type</mat-label>
+    <mat-select [formControl]="questionTypeControl">
+      <mat-option
+        *ngFor="let type of questionTypes"
+        [value]="type.value"
+      >
+        {{ type.viewValue }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="questionTypeControl.hasError('required')">
+      Question type is required
+    </mat-error>
+  </mat-form-field>
+  

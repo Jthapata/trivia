@@ -1,21 +1,31 @@
 .game-setup-container {
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  min-height: 100vh; 
+  align-items: center;
   padding: 16px;
 }
 
-h2 {
-  margin-bottom: 24px;
-  text-align: center;
+mat-card {
+  width: 100%;
+  max-width: 600px;
 }
 
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+}
 
 app-number-of-players,
 app-selected-players,
-app-start-game-button {
+app-number-of-questions,
+app-category-selection,
+app-difficulty-selection,
+app-question-type-selection {
   width: 100%;
-  max-width: 600px; 
-  margin-bottom: 16px;
 }

@@ -1,20 +1,48 @@
 <div class="game-setup-container">
-  <h2>Game Setup</h2>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Game Setup</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Number of Players Component -->
+      <app-number-of-players
+        (numberOfPlayersChange)="onNumberOfPlayersChange($event)"
+      ></app-number-of-players>
 
-  <!-- Number of Players Component -->
-  <app-number-of-players
-    (numberOfPlayersChange)="onNumberOfPlayersChange($event)"
-  ></app-number-of-players>
+      <!-- Selected Players Component -->
+      <app-selected-players
+        [numberOfPlayers]="numberOfPlayers"
+        [availableUsers$]="availableUsers$"
+        (selectedPlayersChange)="onSelectedPlayersChange($event)"
+      ></app-selected-players>
 
-  <!-- Selected Players Component -->
-  <app-selected-players
-    [numberOfPlayers]="numberOfPlayers"
-    [availableUsers$]="availableUsers$"
-    (selectedPlayersChange)="onSelectedPlayersChange($event)"
-  ></app-selected-players>
+      <mat-divider></mat-divider>
 
-  <!-- Start Game Button Component -->
-  <app-start-game-button
-    (startGame)="startGame()"
-  ></app-start-game-button>
+      <!-- Number of Questions Component -->
+      <app-number-of-questions
+        (numberOfQuestionsChange)="onNumberOfQuestionsChange($event)"
+      ></app-number-of-questions>
+
+      <!-- Category Selection Component -->
+      <app-category-selection
+        (categoryChange)="onCategoryChange($event)"
+      ></app-category-selection>
+
+      <!-- Difficulty Selection Component -->
+      <app-difficulty-selection
+        (difficultyChange)="onDifficultyChange($event)"
+      ></app-difficulty-selection>
+
+      <!-- Question Type Selection Component -->
+      <app-question-type-selection
+        (questionTypeChange)="onQuestionTypeChange($event)"
+      ></app-question-type-selection>
+    </mat-card-content>
+    <mat-card-actions>
+      <!-- Start Game Button Component -->
+      <app-start-game-button
+        (startGame)="startGame()"
+      ></app-start-game-button>
+    </mat-card-actions>
+  </mat-card>
 </div>

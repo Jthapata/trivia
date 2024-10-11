@@ -1,0 +1,15 @@
+<mat-form-field appearance="fill">
+    <mat-label>Difficulty</mat-label>
+    <mat-select [formControl]="difficultyControl">
+      <mat-option
+        *ngFor="let difficulty of difficulties"
+        [value]="difficulty.value"
+      >
+        {{ difficulty.viewValue }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="difficultyControl.hasError('required')">
+      Difficulty is required
+    </mat-error>
+  </mat-form-field>
+  

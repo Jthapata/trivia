@@ -1,0 +1,21 @@
+<mat-form-field appearance="fill">
+    <mat-label>Number of Questions</mat-label>
+    <mat-select [formControl]="numberOfQuestionsControl">
+      <mat-option *ngFor="let num of questionNumbers" [value]="num">
+        {{ num }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="numberOfQuestionsControl.hasError('required')">
+      Number of questions is required
+    </mat-error>
+    <mat-error *ngIf="numberOfQuestionsControl.hasError('min')">
+      Minimum number of questions is 6
+    </mat-error>
+    <mat-error *ngIf="numberOfQuestionsControl.hasError('max')">
+      Maximum number of questions is 48
+    </mat-error>
+    <mat-error *ngIf="numberOfQuestionsControl.hasError('notIncrementOfSix')">
+      Number of questions must be in increments of 6
+    </mat-error>
+  </mat-form-field>
+  

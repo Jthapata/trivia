@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { GameService } from '../../services/game.service';
 import { NumberOfPlayersComponent } from '../../components/number-of-players/number-of-players.component';
 import { SelectedPlayersComponent } from '../../components/selected-players/selected-players.component';
+import { NumberOfQuestionsComponent } from '../../components/number-of-questions/number-of-questions.component';
+import { CategorySelectionComponent } from '../../components/category-selection/category-selection.component';
+import { DifficultySelectionComponent } from '../../components/difficulty-selection/difficulty-selection.component';
+import { QuestionTypeSelectionComponent } from '../../components/question-type-selection/question-type-selection.component';
 import { StartGameButtonComponent } from '../../components/start-game-button/start-game-button.component';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../interfaces/user';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
-import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-game-setup',
@@ -20,67 +23,87 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     NumberOfPlayersComponent,
     SelectedPlayersComponent,
+    NumberOfQuestionsComponent,
+    CategorySelectionComponent,
+    DifficultySelectionComponent,
+    QuestionTypeSelectionComponent,
     StartGameButtonComponent,
-    ReactiveFormsModule, // Add if using reactive forms
-    MatFormFieldModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatButtonModule,
+    MatCardModule,
+    MatDividerModule,
   ],
   templateUrl: './game-setup.component.html',
   styleUrls: ['./game-setup.component.scss'],
 })
 export class GameSetupComponent implements OnInit {
-  // Observable of users fetched from Firebase
   availableUsers$!: Observable<User[]>;
-
-  // Variables to store form values
   numberOfPlayers: number = 1;
   selectedPlayers: string[] = [];
+  numberOfQuestions: number = 6;
+  selectedCategory: number | 'any' = 'any';
+  selectedDifficulty: string | 'any' = 'any';
+  selectedQuestionType: string | 'any' = 'any';
 
   constructor(
     private authService: AuthService,
-    private firestore: Firestore
+    private firestore: Firestore,
+    private router: Router, 
+    private gameService: GameService 
   ) {}
 
   ngOnInit() {
-    // Fetch users from Firebase Firestore
     this.fetchAvailableUsers();
   }
 
-  // Fetches users who have previously logged into the app from Firebase
   fetchAvailableUsers() {
-    // Reference to the 'users' collection in Firestore
     const usersRef = collection(this.firestore, 'users');
-
-    // Get observable of user data
     this.availableUsers$ = collectionData(usersRef, { idField: 'id' }) as Observable<User[]>;
   }
 
-  // Handles changes in the number of players
   onNumberOfPlayersChange(value: number) {
     this.numberOfPlayers = value;
-    // Reset selected players when the number of players changes
     this.selectedPlayers = [];
   }
 
-  // Handles changes in the selected players
   onSelectedPlayersChange(value: string[]) {
     this.selectedPlayers = value;
   }
 
-  // Handles form submission to start the game
+  onNumberOfQuestionsChange(value: number) {
+    this.numberOfQuestions = value;
+  }
+
+  onCategoryChange(value: number | 'any') {
+    this.selectedCategory = value;
+  }
+
+  onDifficultyChange(value: string | 'any') {
+    this.selectedDifficulty = value;
+  }
+
+  onQuestionTypeChange(value: string | 'any') {
+    this.selectedQuestionType = value;
+  }
+
   startGame() {
-    // Perform validation checks
+    // Validation checks
     if (this.numberOfPlayers > 1 && this.selectedPlayers.length !== this.numberOfPlayers) {
       console.log('Please select the correct number of players.');
       return;
     }
 
-    // Log the game settings
-    console.log('Number of Players:', this.numberOfPlayers);
-    console.log('Selected Players:', this.selectedPlayers);
+    // Store the game settings in the GameService
+    const gameSettings = {
+      numberOfPlayers: this.numberOfPlayers,
+      selectedPlayers: this.selectedPlayers,
+      numberOfQuestions: this.numberOfQuestions,
+      selectedCategory: this.selectedCategory,
+      selectedDifficulty: this.selectedDifficulty,
+      selectedQuestionType: this.selectedQuestionType,
+    };
 
-    // TODO: Proceed to the next step (e.g., navigate to the game page)
+    this.gameService.setGameSettings(gameSettings);
+
+    // Navigate to the game page
+    this.router.navigate(['/game']);
   }
 }
