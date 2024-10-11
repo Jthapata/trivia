@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {LoginComponent} from "../../components/login/login.component";
 import {RegisterComponent} from "../../components/register/register.component";
+import {AuthService} from "../../services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -9,6 +11,15 @@ import {RegisterComponent} from "../../components/register/register.component";
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  authService = inject(AuthService)
+  router = inject(Router)
 
+  ngOnInit() {
+    this.authService.user$.subscribe((user: any) => {
+      if (user) {
+        this.router.navigate(['/game-setup'])
+      }
+    })
+  }
 }
