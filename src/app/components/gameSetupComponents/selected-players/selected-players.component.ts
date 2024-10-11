@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { User } from '../../interfaces/user';
+import { User } from '../../../interfaces/user';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatOptionModule } from '@angular/material/core';
@@ -12,9 +12,9 @@ import { MatOptionModule } from '@angular/material/core';
   selector: 'app-selected-players',
   standalone: true,
   imports: [
-    MatSelectModule, 
-    MatFormFieldModule, 
-    ReactiveFormsModule, 
+    MatSelectModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
     CommonModule,
     MatFormFieldModule,
     MatOptionModule

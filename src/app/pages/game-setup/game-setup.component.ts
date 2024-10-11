@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { GameService } from '../../services/game.service';
-import { NumberOfPlayersComponent } from '../../components/number-of-players/number-of-players.component';
-import { SelectedPlayersComponent } from '../../components/selected-players/selected-players.component';
-import { NumberOfQuestionsComponent } from '../../components/number-of-questions/number-of-questions.component';
-import { CategorySelectionComponent } from '../../components/category-selection/category-selection.component';
-import { DifficultySelectionComponent } from '../../components/difficulty-selection/difficulty-selection.component';
-import { QuestionTypeSelectionComponent } from '../../components/question-type-selection/question-type-selection.component';
-import { StartGameButtonComponent } from '../../components/start-game-button/start-game-button.component';
+import { NumberOfPlayersComponent } from '../../components/gameSetupComponents/number-of-players/number-of-players.component';
+import { SelectedPlayersComponent } from '../../components/gameSetupComponents/selected-players/selected-players.component';
+import { NumberOfQuestionsComponent } from '../../components/gameSetupComponents/number-of-questions/number-of-questions.component';
+import { CategorySelectionComponent } from '../../components/gameSetupComponents/category-selection/category-selection.component';
+import { DifficultySelectionComponent } from '../../components/gameSetupComponents/difficulty-selection/difficulty-selection.component';
+import { QuestionTypeSelectionComponent } from '../../components/gameSetupComponents/question-type-selection/question-type-selection.component';
+import { StartGameButtonComponent } from '../../components/gameSetupComponents/start-game-button/start-game-button.component';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../interfaces/user';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
@@ -46,9 +46,9 @@ export class GameSetupComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private firestore: Firestore,
-    private router: Router, 
-    private gameService: GameService 
-  ) {}
+    private router: Router,
+    private gameService: GameService
+  ) { }
 
   ngOnInit() {
     this.fetchAvailableUsers();
