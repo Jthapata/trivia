@@ -1,9 +1,9 @@
-import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { User } from '../../../interfaces/user';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatOptionModule } from '@angular/material/core';
 
@@ -22,15 +22,20 @@ import { MatOptionModule } from '@angular/material/core';
   templateUrl: './selected-players.component.html',
   styleUrls: ['./selected-players.component.scss'],
 })
-export class SelectedPlayersComponent implements OnChanges {
-  @Input() numberOfPlayers!: number;
+export class SelectedPlayersComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() numberOfPlayers: number = 1;
   @Input() availableUsers$!: Observable<User[]>;
+  @Input() currentUserId: string | null = null; 
   @Output() selectedPlayersChange = new EventEmitter<string[]>();
 
   selectedPlayersControl = new FormControl<string[]>([], {
-    validators: [],
+    validators: [Validators.required],
     nonNullable: true,
   });
+
+  users: User[] = [];
+  currentUserName: string = '';
+  private usersSubscription!: Subscription;
 
   constructor() {
     // Emit initial value
@@ -42,19 +47,45 @@ export class SelectedPlayersComponent implements OnChanges {
     });
   }
 
+  ngOnInit() {
+    // Subscribe to availableUsers$ to get users
+    this.usersSubscription = this.availableUsers$.subscribe((users) => {
+      this.users = users;
+
+      // Find the current user's details
+      if (this.currentUserId) {
+        const currentUser = this.users.find((user) => user.id === this.currentUserId);
+        if (currentUser) {
+          this.currentUserName = currentUser.email; // Or use 'name' if available
+        }
+      }
+    });
+  }
+
   ngOnChanges() {
-    if (this.numberOfPlayers > 1) {
-      // Set validators based on the number of players
-      this.selectedPlayersControl.setValidators([
-        Validators.required,
-        Validators.minLength(this.numberOfPlayers),
-        Validators.maxLength(this.numberOfPlayers),
-      ]);
+    // Update validators based on numberOfPlayers
+    this.selectedPlayersControl.setValidators([
+      Validators.required,
+      Validators.minLength(this.numberOfPlayers),
+      Validators.maxLength(this.numberOfPlayers),
+    ]);
+    this.selectedPlayersControl.updateValueAndValidity();
+
+    if (this.numberOfPlayers === 1 && this.currentUserId) {
+      // Automatically select the current user
+      if (this.currentUserId !== null) {
+        this.selectedPlayersControl.setValue([this.currentUserId]);
+        this.selectedPlayersControl.disable(); // Disable control since no selection is needed
+      }
     } else {
-      // Clear validators if only one player
-      this.selectedPlayersControl.clearValidators();
+      this.selectedPlayersControl.enable();
       this.selectedPlayersControl.setValue([]);
     }
-    this.selectedPlayersControl.updateValueAndValidity();
+  }
+
+  ngOnDestroy() {
+    if (this.usersSubscription) {
+      this.usersSubscription.unsubscribe();
+    }
   }
 }

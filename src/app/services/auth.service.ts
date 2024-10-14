@@ -53,7 +53,7 @@ export class AuthService {
       cat_mythology: 0,
       cat_history: 0
     }
-    this.db.collection('users').add(user).then(r => console.log(r));
+    this.db.collection('users').doc(uid).set(user).then(() => console.log('User added to database'));
   }
 
   logout(): Observable<void> {

@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GameService } from '../../services/game.service';
-import { NumberOfPlayersComponent } from '../../components/gameSetupComponents/number-of-players/number-of-players.component';
-import { SelectedPlayersComponent } from '../../components/gameSetupComponents/selected-players/selected-players.component';
-import { NumberOfQuestionsComponent } from '../../components/gameSetupComponents/number-of-questions/number-of-questions.component';
-import { CategorySelectionComponent } from '../../components/gameSetupComponents/category-selection/category-selection.component';
-import { DifficultySelectionComponent } from '../../components/gameSetupComponents/difficulty-selection/difficulty-selection.component';
-import { QuestionTypeSelectionComponent } from '../../components/gameSetupComponents/question-type-selection/question-type-selection.component';
-import { StartGameButtonComponent } from '../../components/gameSetupComponents/start-game-button/start-game-button.component';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../interfaces/user';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
+import { CategorySelectionComponent } from '../../components/gameSetupComponents/category-selection/category-selection.component';
+import { DifficultySelectionComponent } from '../../components/gameSetupComponents/difficulty-selection/difficulty-selection.component';
+import { NumberOfPlayersComponent } from '../../components/gameSetupComponents/number-of-players/number-of-players.component';
+import { NumberOfQuestionsComponent } from '../../components/gameSetupComponents/number-of-questions/number-of-questions.component';
+import { QuestionTypeSelectionComponent } from '../../components/gameSetupComponents/question-type-selection/question-type-selection.component';
+import { SelectedPlayersComponent } from '../../components/gameSetupComponents/selected-players/selected-players.component';
+import { StartGameButtonComponent } from '../../components/gameSetupComponents/start-game-button/start-game-button.component';
+import { MatDividerModule } from '@angular/material/divider'
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-game-setup',
@@ -30,11 +31,13 @@ import { MatDividerModule } from '@angular/material/divider';
     StartGameButtonComponent,
     MatCardModule,
     MatDividerModule,
+    MatButtonModule
+   
   ],
   templateUrl: './game-setup.component.html',
   styleUrls: ['./game-setup.component.scss'],
 })
-export class GameSetupComponent implements OnInit {
+export class GameSetupComponent implements OnInit, OnDestroy {
   availableUsers$!: Observable<User[]>;
   numberOfPlayers: number = 1;
   selectedPlayers: string[] = [];
@@ -43,16 +46,41 @@ export class GameSetupComponent implements OnInit {
   selectedDifficulty: string | 'any' = 'any';
   selectedQuestionType: string | 'any' = 'any';
 
+  // Variable to hold the current user's ID
+  currentUserId: string | null = null;
+  private userSubscription!: Subscription;
+
   constructor(
     private authService: AuthService,
     private firestore: Firestore,
     private router: Router,
     private gameService: GameService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.fetchAvailableUsers();
+    this.subscribeToAuthUser();
   }
+
+  ngOnDestroy() {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+
+  subscribeToAuthUser() {
+    this.userSubscription = this.authService.user$.subscribe((user: { uid: string | null; }) => {
+      if (user) {
+        this.currentUserId = user.uid;
+        if (this.numberOfPlayers === 1) {
+          this.selectedPlayers = [this.currentUserId!];
+        }
+      } else {
+        this.currentUserId = null;
+        this.selectedPlayers = [];
+      }
+    });
+  }  
 
   fetchAvailableUsers() {
     const usersRef = collection(this.firestore, 'users');
@@ -61,7 +89,15 @@ export class GameSetupComponent implements OnInit {
 
   onNumberOfPlayersChange(value: number) {
     this.numberOfPlayers = value;
-    this.selectedPlayers = [];
+    if (this.numberOfPlayers === 1) {
+      if (this.currentUserId) {
+        this.selectedPlayers = [this.currentUserId];
+      } else {
+        this.selectedPlayers = [];
+      }
+    } else {
+      this.selectedPlayers = [];
+    }
   }
 
   onSelectedPlayersChange(value: string[]) {
@@ -91,6 +127,12 @@ export class GameSetupComponent implements OnInit {
       return;
     }
 
+    //check when number of players is 1
+    if (this.numberOfPlayers === 1 && (!this.selectedPlayers || this.selectedPlayers.length !== 1)) {
+      console.log('Error: No player selected.');
+      return;
+    }
+
     // Store the game settings in the GameService
     const gameSettings = {
       numberOfPlayers: this.numberOfPlayers,
@@ -103,7 +145,9 @@ export class GameSetupComponent implements OnInit {
 
     this.gameService.setGameSettings(gameSettings);
 
-    // Navigate to the game page
     this.router.navigate(['/game']);
+  }
+  navigateToProfile() {
+    this.router.navigate(['/profile']);
   }
 }

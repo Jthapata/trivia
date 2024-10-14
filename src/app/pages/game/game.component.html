@@ -1,6 +1,11 @@
 <h2>Game Page</h2>
+<p>The game will start soon!</p>
 
 <div>
-  <h3>Game Settings:</h3>
-  <pre>{{ gameSettings | json }}</pre>
+  <h3>Selected Players:</h3>
+  <ul>
+    <li *ngFor="let player of selectedPlayers">
+      {{ player.email }} (ID: {{ player.id }})
+    </li>
+  </ul>
 </div>

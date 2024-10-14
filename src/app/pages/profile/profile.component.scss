@@ -1,0 +1,21 @@
+section {
+    margin-bottom: 24px;
+  }
+  
+  .progress-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  mat-progress-spinner {
+    margin-right: 16px;
+  }
+  .navigation-buttons {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+
+  
