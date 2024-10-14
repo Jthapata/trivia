@@ -8,7 +8,6 @@ import {
 import {from, Observable} from "rxjs";
 import {User} from "../interfaces/user";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
-import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +15,6 @@ import {Router} from "@angular/router";
 export class AuthService {
   firebaseAuth = inject(Auth)
   user$ = user(this.firebaseAuth)
-  route = inject(Router)
   currentUserSig = signal<User | null | undefined>(undefined)
 
   constructor(
