@@ -39,6 +39,9 @@
       ></app-question-type-selection>
     </mat-card-content>
     <mat-card-actions>
+      <div class="logout-button-container">
+        <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+      </div>
       <!-- Start Game Button Component -->
       <app-start-game-button
         (startGame)="startGame()"

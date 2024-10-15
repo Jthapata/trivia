@@ -45,6 +45,7 @@ export class GameSetupComponent implements OnInit, OnDestroy {
   selectedCategory: number | 'any' = 'any';
   selectedDifficulty: string | 'any' = 'any';
   selectedQuestionType: string | 'any' = 'any';
+  categories: any[] = [];
 
   // Variable to hold the current user's ID
   currentUserId: string | null = null;
@@ -55,7 +56,9 @@ export class GameSetupComponent implements OnInit, OnDestroy {
     private firestore: Firestore,
     private router: Router,
     private gameService: GameService
-  ) {}
+  ) {
+    this.categories = this.gameService.getCategories();
+  }
 
   ngOnInit() {
     this.fetchAvailableUsers();
@@ -149,5 +152,16 @@ export class GameSetupComponent implements OnInit, OnDestroy {
   }
   navigateToProfile() {
     this.router.navigate(['/profile']);
+  }
+  logout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        console.log('User logged out successfully');
+        this.router.navigate(['/home']); // Redirect to Home Page
+      },
+      error: (error) => {
+        console.error('Error logging out:', error);
+      },
+    });
   }
 }
