@@ -17,11 +17,9 @@ export class GameService {
 
   setGameSettings(settings: any) {
     this.gameSettings = settings;
-    console.log('Game Settings set in service:', this.gameSettings);
   }
 
   getGameSettings() {
-    console.log('Game Settings retrieved from service:', this.gameSettings);
     return this.gameSettings;
   }
 
@@ -30,17 +28,13 @@ export class GameService {
   }
 
   getQuestions() {
-    let baseUrl = 'https://opentdb.com/api.php?';
+    let baseUrl : string = 'https://opentdb.com/api.php?';
     const { numberOfQuestions, selectedDifficulty, selectedCategory, selectedQuestionType } = this.gameSettings;
 
-    baseUrl += `amount=${numberOfQuestions}`;
+    baseUrl += `amount=${numberOfQuestions}&category=${selectedCategory}`;
 
     if (selectedDifficulty !== 'any') {
       baseUrl += `&difficulty=${selectedDifficulty}`;
-    }
-
-    if (selectedCategory !== 'any') {
-      baseUrl += `&category=${selectedCategory}`;
     }
 
     if (selectedQuestionType !== 'any') {

@@ -1,11 +1,12 @@
-<h2>Game Page</h2>
-<p>The game will start soon!</p>
-
 <div>
-  <h3>Selected Players:</h3>
-  <ul>
-    <li *ngFor="let player of selectedPlayers">
-      {{ player.email }} (ID: {{ player.id }})
-    </li>
-  </ul>
+<!--  insert if statement-->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{selectedPlayers[currentPlayerIndex].email.split('@')[0]}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-question></app-question>
+      <app-answers></app-answers>
+    </mat-card-content>
+  </mat-card>
 </div>

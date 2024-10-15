@@ -31,6 +31,7 @@ export class QuestionsService {
     if (this.questions.length > 0) {
       this.currentQuestion = this.questions.shift();
     }
+    this.mixAnswers();
   }
 
   mixAnswers() {

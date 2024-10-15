@@ -6,11 +6,15 @@ import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { documentId } from '@angular/fire/firestore';
 import { QuestionsService } from "../../services/questions.service";
+import {PlayersService} from "../../services/players.service";
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {QuestionComponent} from "../../components/gameComponents/question/question.component";
+import {AnswersComponent} from "../../components/gameComponents/answers/answers.component";
 
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatCard, QuestionComponent, AnswersComponent, MatCardTitle, MatCardHeader, MatCardContent],
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
 })
@@ -18,21 +22,22 @@ export class GameComponent implements OnInit, OnDestroy {
   gameSettings: any;
   selectedPlayers: User[] = [];
   private playersSubscription!: Subscription;
+  currentPlayerIndex = 0;
+  loading = true;
 
   constructor(
     private gameService: GameService,
     private firestore: Firestore,
     private questionsService: QuestionsService,
+    private playersService: PlayersService,
   ) {}
 
   ngOnInit() {
     // Retrieve the game settings from the service
     this.gameSettings = this.gameService.getGameSettings();
-    console.log('Game Settings:', this.gameSettings);
 
     // Now fetch the user details for the selectedPlayers
     const selectedPlayerIds: string[] = this.gameSettings.selectedPlayers;
-    console.log('Selected Player IDs:', selectedPlayerIds); // Add this line
 
     // Fetch the questions, get the first question and mix the answers
     this.gameService.getQuestions()
@@ -50,9 +55,10 @@ export class GameComponent implements OnInit, OnDestroy {
 
         // Log each user's ID and email
         this.selectedPlayers.forEach(user => {
-          console.log(`ID: ${user.id}, Email: ${user.email}`);
+          this.playersService.setPlayerStats(user.email, 0, 0);
         });
       });
+      this.loading = false;
     } else {
       console.log('No selected players');
     }
