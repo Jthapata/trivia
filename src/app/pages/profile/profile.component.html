@@ -1,47 +1,60 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Your Profile</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div *ngIf="currentUser$ | async as user; else loading">
-      <section>
-        <h3>General Information</h3>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-      </section>
-      <section>
-        <h3>Game Statistics</h3>
-        <p><strong>Total Games Played:</strong> {{ user.games_played || 0 }}</p>
-        <p><strong>Games Won:</strong> {{ user.games_won || 0 }}</p>
-        <p><strong>Games Lost:</strong> {{ user.games_lost || 0 }}</p>
-      </section>
-      <section>
-        <h3>Question Statistics</h3>
-        <p><strong>Total Questions Answered:</strong> {{ user.total_questions || 0 }}</p>
-        <p><strong>Correct Answers:</strong> {{ user.correct_answers || 0 }}</p>
-        <p><strong>Incorrect Answers:</strong> {{ user.wrong_answers || 0 }}</p>
-        <div class="progress-container">
-          <p><strong>Answer Accuracy:</strong></p>
-          <mat-progress-spinner
-            mode="determinate"
-            [value]="calculateAccuracy(user.correct_answers, user.total_questions)"
-            diameter="100"
-          ></mat-progress-spinner>
-          <p>{{ calculateAccuracy(user.correct_answers, user.total_questions) }}%</p>
-        </div>
-      </section>
-      <section>
-        <h3>Category Performance</h3>
-        <p><strong>Best Category:</strong> {{ bestCategory }}</p>
-        <p><strong>Worst Category:</strong> {{ worstCategory }}</p>
-      </section>
-    </div>
-    <div class="navigation-buttons">
-      <button mat-button color="primary" (click)="navigateToGameSetup()">
+<div class="profile-container">
+  <mat-card class="profile-card">
+    <mat-card-header>
+      <mat-card-title>Your Profile</mat-card-title>
+      <mat-card-subtitle>View your game statistics</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="currentUser$ | async as user; else loading">
+        <!-- General Information Section -->
+        <section class="section info-section">
+          <h3>General Information</h3>
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p><strong>Total Games Played:</strong> {{ user.games_played || 0 }}</p>
+          <p><strong>Games Won:</strong> {{ user.games_won || 0 }}</p>
+          <p><strong>Games Lost:</strong> {{ user.games_lost || 0 }}</p>
+        </section>
+
+        <!-- Question Statistics Section -->
+        <section class="section stats-section">
+          <h3>Question Statistics</h3>
+          <p><strong>Total Questions Answered:</strong> {{ user.total_questions || 0 }}</p>
+          <p><strong>Correct Answers:</strong> {{ user.correct_answers || 0 }}</p>
+          <p><strong>Incorrect Answers:</strong> {{ user.wrong_answers || 0 }}</p>
+          <div class="progress-container">
+            <p><strong>Answer Accuracy:</strong></p>
+            <mat-progress-spinner
+              mode="determinate"
+              [value]="calculateAccuracy(user.correct_answers, user.total_questions)"
+              diameter="100"
+              color="primary"
+            ></mat-progress-spinner>
+            <p>{{ calculateAccuracy(user.correct_answers, user.total_questions) }}%</p>
+          </div>
+        </section>
+
+        <!-- Category Performance Section -->
+        <section class="section category-section">
+          <h3>Category Performance</h3>
+          <div class="category-info">
+            <p><strong>Best Category:</strong></p>
+            <p>{{ bestCategory }}</p>
+          </div>
+          <div class="category-info">
+            <p><strong>Worst Category:</strong></p>
+            <p>{{ worstCategory }}</p>
+          </div>
+        </section>
+      </div>
+      <ng-template #loading>
+        <p>Loading your profile...</p>
+      </ng-template>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="accent" (click)="navigateToGameSetup()">
+        <mat-icon>arrow_back</mat-icon>
         Back to Game Setup
       </button>
-    </div>
-  <ng-template #loading>
-    <p>Loading your profile...</p>
-  </ng-template>
-</mat-card-content>
-</mat-card>
+    </mat-card-actions>
+  </mat-card>
+</div>

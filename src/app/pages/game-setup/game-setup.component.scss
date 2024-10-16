@@ -1,8 +1,11 @@
 .game-setup-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   padding: 16px;
+  height: 100svh;
+  background-color: #e8f0fe;
 }
 
 mat-card {
@@ -19,6 +22,7 @@ mat-card-content {
 mat-card-actions {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 app-number-of-players,
@@ -30,8 +34,3 @@ app-question-type-selection {
   width: 100%;
 }
 
-.logout-button-container {
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-}
