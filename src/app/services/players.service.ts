@@ -19,10 +19,6 @@ export class PlayersService {
     }
   }
 
-  getPlayerStats(email: string) {
-    return this.playerStats.find(stat => stat.email === email);
-  }
-
   resetPlayerStats() {
     this.playerStats = [];
   }
