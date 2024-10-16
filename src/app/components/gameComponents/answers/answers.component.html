@@ -1,1 +1,5 @@
-<p>answers works!</p>
+<div *ngIf="currentAnswers">
+  <mat-card *ngFor="let answer of currentAnswers" (click)="selectAnswer(answer)">
+    <mat-card-header [innerHTML]="answer"></mat-card-header>
+  </mat-card>
+</div>

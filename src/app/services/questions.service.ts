@@ -27,9 +27,15 @@ export class QuestionsService {
     return this.currentAnswers;
   }
 
+  checkAnswer(selectedAnswer: string) {
+    return !!(this.currentQuestion && selectedAnswer === this.currentQuestion.correct_answer);
+  }
+
   nextQuestion() {
     if (this.questions.length > 0) {
       this.currentQuestion = this.questions.shift();
+    } else {
+      this.currentQuestion = undefined;
     }
     this.mixAnswers();
   }
