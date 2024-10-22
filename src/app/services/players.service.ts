@@ -9,13 +9,13 @@ export class PlayersService {
 
   constructor() { }
 
-  setPlayerStats(email: string, correctAnswers: number, incorrectAnswers: number) {
-    const existingStats = this.playerStats.find(stat => stat.email === email);
+  setPlayerStats(id: string, email: string, correctAnswers: number, incorrectAnswers: number) {
+    const existingStats = this.playerStats.find(stat => stat.id === id);
     if (existingStats) {
       existingStats.correctAnswers += correctAnswers;
       existingStats.incorrectAnswers += incorrectAnswers;
     } else {
-      this.playerStats.push({ email, correctAnswers, incorrectAnswers });
+      this.playerStats.push({id, email, correctAnswers, incorrectAnswers });
     }
   }
 

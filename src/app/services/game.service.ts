@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Firestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameService {
   private gameSettings: any = {};
+
+  constructor( private firestore: Firestore) {}
 
   categories = [
     { name: 'General Knowledge', value: 'cat_general' },
@@ -42,5 +45,9 @@ export class GameService {
     }
 
     return fetch(baseUrl);
+  }
+
+  addPlayerStatsToFirebase(playerStats: any, winner: string[]) {
+    console.log(playerStats, winner);
   }
 }
