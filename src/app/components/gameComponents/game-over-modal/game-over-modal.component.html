@@ -1,1 +1,6 @@
-<p>game-over-modal works!</p>
+<div class="modal">
+    <p>Congratulations</p>
+    <p *ngFor="let winner of winners">{{ winner.split('@')[0] }}</p>
+    <button mat-raised-button color="primary" (click)="navigateToGameSetup()">Play Again</button>
+</div>
+<div class="overlay"></div>

@@ -45,7 +45,7 @@ export class GameComponent implements OnInit, OnDestroy {
   selectedAnswer: string = '';
   currentQuestion: Question | undefined;
   isAnswerCorrect: boolean = true;
-  winner: string = '';
+  winners: string[] = [];
   playersStats: PlayerStats[] = [];
 
   constructor(
@@ -82,9 +82,10 @@ export class GameComponent implements OnInit, OnDestroy {
 
         this.playersService.resetPlayerStats();
         this.selectedPlayers.forEach(user => {
-          this.playersService.setPlayerStats(user.email, 0, 0);
+          this.playersService.setPlayerStats(user.id, user.email, 0, 0);
         });
         this.playersStats = this.playersService.getAllPlayerStats();
+        console.log(this.selectedPlayers);
       });
     } else {
       console.log('No selected players');
@@ -107,18 +108,19 @@ export class GameComponent implements OnInit, OnDestroy {
       const currentPlayer = this.selectedPlayers[this.currentPlayerIndex];
       this.isAnswerCorrect = this.questionsService.checkAnswer(this.selectedAnswer);
       if (this.isAnswerCorrect) {
-        this.playersService.setPlayerStats(currentPlayer.email, 1, 0);
+        this.playersService.setPlayerStats(currentPlayer.id, currentPlayer.email, 1, 0);
       } else {
-        this.playersService.setPlayerStats(currentPlayer.email, 0, 1);
+        this.playersService.setPlayerStats(currentPlayer.id, currentPlayer.email, 0, 1);
       }
       this.submitted = true;
       this.questionsService.nextQuestion();
       if (this.questionsService.getCurrentQuestion() === undefined) {
         this.noMoreQuestions = true;
-        this.winner = this.playersService.getAllPlayerStats()
-          .reduce((prev, current) => {
-            return (prev.correctAnswers > current.correctAnswers) ? prev : current;
-          }).email;
+        const allPlayerStats = this.playersService.getAllPlayerStats();
+        const maxCorrectAnswers = Math.max(...allPlayerStats.map(player => player.correctAnswers));
+        this.winners = allPlayerStats
+          .filter(player => player.correctAnswers === maxCorrectAnswers)
+          .map(player => player.email);
         return;
       }
       this.showNextButton = true;
@@ -139,9 +141,12 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   finishGame() {
-    this.playersService.getAllPlayerStats().forEach(stat => {
-      console.log(`Player: ${stat.email}, Correct: ${stat.correctAnswers}, Incorrect: ${stat.incorrectAnswers}`);
-    });
+    this.sendStatsToFirebase();
     this.gameOver = true;
+  }
+
+  sendStatsToFirebase() {
+    this.playersStats = this.playersService.getAllPlayerStats();
+    this.gameService.addPlayerStatsToFirebase(this.playersStats, this.winners);
   }
 }
