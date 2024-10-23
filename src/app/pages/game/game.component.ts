@@ -85,7 +85,6 @@ export class GameComponent implements OnInit, OnDestroy {
           this.playersService.setPlayerStats(user.id, user.email, 0, 0);
         });
         this.playersStats = this.playersService.getAllPlayerStats();
-        console.log(this.selectedPlayers);
       });
     } else {
       console.log('No selected players');
@@ -147,6 +146,38 @@ export class GameComponent implements OnInit, OnDestroy {
 
   sendStatsToFirebase() {
     this.playersStats = this.playersService.getAllPlayerStats();
-    this.gameService.addPlayerStatsToFirebase(this.playersStats, this.winners);
+    this.playersStats.forEach(player => {
+      this.selectedPlayers.forEach(user => {
+        if (player.id === user.id) {
+          user.games_played! += 1;
+          user.correct_answers! += player.correctAnswers;
+          user.wrong_answers! += player.incorrectAnswers;
+          user.total_questions! += player.correctAnswers + player.incorrectAnswers;
+          if (this.winners.includes(user.email)) {
+            user.games_won! += 1;
+            switch (this.gameSettings.selectedCategory) {
+              case 9:
+                user.cat_general! += 1;
+                break;
+              case 12:
+                user.cat_music! += 1;
+                break;
+              case 15:
+                user.cat_videoGames! += 1;
+                break;
+              case 20:
+                user.cat_mythology! += 1;
+                break;
+              case 23:
+                user.cat_history! += 1;
+                break;
+            }
+          } else {
+            user.games_lost! += 1;
+          }
+        }
+      });
+    });
+    this.gameService.addPlayerStatsToFirebase(this.selectedPlayers);
   }
 }
