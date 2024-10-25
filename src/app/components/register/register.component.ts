@@ -6,6 +6,7 @@ import {AuthService} from "../../services/auth.service";
 import { FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButton} from "@angular/material/button";
 import {Router} from "@angular/router";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,8 @@ import {Router} from "@angular/router";
     MatInput,
     ReactiveFormsModule,
     MatButton,
-    MatError
+    MatError,
+    NgIf
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -41,7 +43,6 @@ export class RegisterComponent {
         error: (error) => {
           if (error.code === 'auth/email-already-in-use') {
             this.emailInUseError = true
-            console.log('Email already in use')
         }}
       })
   }

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {MatCard, MatCardHeader} from "@angular/material/card";
-import {NgForOf, NgIf} from "@angular/common";
+import {MatCard, MatCardContent, MatCardHeader} from "@angular/material/card";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-answers',
@@ -9,16 +9,20 @@ import {NgForOf, NgIf} from "@angular/common";
     MatCard,
     NgForOf,
     MatCardHeader,
-    NgIf
+    NgIf,
+    MatCardContent,
+    NgClass
   ],
   templateUrl: './answers.component.html',
   styleUrl: './answers.component.scss'
 })
 export class AnswersComponent {
   @Input() currentAnswers: string[] = [];
-  @Output() answerSelected = new EventEmitter<string>();
+  @Input() selectedAnswer: string = '';
+  @Output() selectedAnswerChange = new EventEmitter<string>();
+  @Input() correctAnswer: string = '';
 
   selectAnswer(answer: string) {
-    this.answerSelected.emit(answer);
+    this.selectedAnswerChange.emit(answer);
   }
 }

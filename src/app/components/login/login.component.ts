@@ -6,6 +6,8 @@ import {FormControl, FormsModule, ReactiveFormsModule, Validators} from "@angula
 import {MatButton} from "@angular/material/button";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
+import {MatDivider} from "@angular/material/divider";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,9 @@ import {Router} from "@angular/router";
     FormsModule,
     MatButton,
     MatError,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDivider,
+    NgIf
 
   ],
   templateUrl: './login.component.html',
@@ -27,8 +31,9 @@ import {Router} from "@angular/router";
 export class LoginComponent {
   authService = inject(AuthService)
   emailFC = new FormControl('', [Validators.required, Validators.email])
-  passwordFC = new FormControl('', [Validators.required, Validators.minLength(6)])
+  passwordFC = new FormControl('', [Validators.required])
   router = inject(Router)
+  errorMessage: string | null = null
 
   login() {
     if (this.emailFC.invalid || this.passwordFC.invalid) {
@@ -39,8 +44,8 @@ export class LoginComponent {
         next: () => {
           this.router.navigate(['/game-setup'])
         },
-        error: (error) => {
-          console.log(error)
+        error: () => {
+          this.errorMessage = 'Invalid email or password'
         }
       })
   }

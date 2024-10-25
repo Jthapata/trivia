@@ -1,5 +1,7 @@
 <div *ngIf="currentAnswers">
-  <mat-card *ngFor="let answer of currentAnswers" (click)="selectAnswer(answer)">
-    <mat-card-header [innerHTML]="answer"></mat-card-header>
+  <mat-card *ngFor="let answer of currentAnswers"
+            (click)="selectAnswer(answer)"
+            [ngClass]="{'selected-answer': answer === selectedAnswer, 'correct-answer': answer === correctAnswer}">
+    <mat-card-content [innerHTML]="answer"></mat-card-content>
   </mat-card>
 </div>

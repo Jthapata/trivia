@@ -48,7 +48,6 @@ export class GameService {
   }
 
   addPlayerStatsToFirebase(playerStats: any) {
-    console.log(playerStats);
     playerStats.forEach((player: any) => {
       this.firestore.collection('users').doc(player.docId).update({
         cat_general: player.cat_general ?? 0,

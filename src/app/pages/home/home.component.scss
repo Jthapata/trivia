@@ -1,0 +1,15 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100svh;
+  width: 100svw;
+  background-color: #e8f0fe;
+}
+app-login {
+  width: 50%;
+}
+app-register {
+  width: 50%;
+}
