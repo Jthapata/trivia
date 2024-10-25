@@ -1,13 +1,16 @@
 <mat-card>
   <mat-card-title>Register</mat-card-title>
-    <mat-form-field>
-      <input matInput [formControl]="emailFC" type="email" placeholder="Email">
-      @if(emailInUseError) {
-        <mat-error>Email is already in use</mat-error>
-      }
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput [formControl]="passwordFC" type="password" placeholder="Password">
-    </mat-form-field>
-    <button mat-raised-button color="primary" (click)="register()">Register</button>
+  <br>
+  <mat-form-field>
+    <input matInput [formControl]="emailFC" type="email" placeholder="Email">
+    <mat-error *ngIf="emailInUseError">Email is already in use</mat-error>
+    <mat-error *ngIf="emailFC.hasError('required')">Email is required</mat-error>
+    <mat-error *ngIf="emailFC.hasError('email')">Please enter a valid email</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [formControl]="passwordFC" type="password" placeholder="Password">
+    <mat-error *ngIf="passwordFC.hasError('required')">Password is required</mat-error>
+    <mat-error *ngIf="passwordFC.hasError('minlength')">Password must be at least 6 characters long</mat-error>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="register()">Register</button>
 </mat-card>

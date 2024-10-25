@@ -23,11 +23,12 @@ import {
 } from "../../components/gameComponents/finish-game-button/finish-game-button.component";
 import {GameOverModalComponent} from "../../components/gameComponents/game-over-modal/game-over-modal.component";
 import {PlayerStats} from "../../interfaces/player-stats";
+import {MatDivider} from "@angular/material/divider";
 
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [CommonModule, MatCard, QuestionComponent, AnswersComponent, MatCardTitle, MatCardHeader, MatCardContent, GameStatsComponent, SubmitAnswerButtonComponent, NextQuestionButtonComponent, FinishGameButtonComponent, GameOverModalComponent],
+  imports: [CommonModule, MatCard, QuestionComponent, AnswersComponent, MatCardTitle, MatCardHeader, MatCardContent, GameStatsComponent, SubmitAnswerButtonComponent, NextQuestionButtonComponent, FinishGameButtonComponent, GameOverModalComponent, MatDivider],
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
 })
@@ -47,6 +48,7 @@ export class GameComponent implements OnInit, OnDestroy {
   isAnswerCorrect: boolean = true;
   winners: string[] = [];
   playersStats: PlayerStats[] = [];
+  correctAnswer: string = '';
 
   constructor(
     private gameService: GameService,
@@ -98,10 +100,6 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
-  selectAnswer(answer: string) {
-    this.selectedAnswer = answer;
-  }
-
   submitAnswer() {
     if (this.selectedAnswer) {
       const currentPlayer = this.selectedPlayers[this.currentPlayerIndex];
@@ -122,11 +120,14 @@ export class GameComponent implements OnInit, OnDestroy {
           .map(player => player.email);
         return;
       }
+      this.correctAnswer = this.currentQuestion!.correct_answer;
       this.showNextButton = true;
     }
   }
 
   nextButtonClicked() {
+    this.correctAnswer = '';
+    this.selectedAnswer = '';
     this.nextQuestion()
   }
 

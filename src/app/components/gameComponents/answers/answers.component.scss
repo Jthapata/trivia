@@ -1,0 +1,17 @@
+mat-card {
+  width: 75%;
+  margin: 1rem;
+  display: flex;
+  justify-content: left;
+  padding: 0;
+}
+mat-card:hover {
+  background-color: #d0d0d0;
+  cursor: pointer;
+}
+.selected-answer {
+  background-color: #d0d0d0;
+}
+.correct-answer {
+  background-color: #4CBB17;
+}

@@ -32,7 +32,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatCardModule,
     MatDividerModule,
     MatButtonModule
-   
+
   ],
   templateUrl: './game-setup.component.html',
   styleUrls: ['./game-setup.component.scss'],
@@ -83,7 +83,7 @@ export class GameSetupComponent implements OnInit, OnDestroy {
         this.selectedPlayers = [];
       }
     });
-  }  
+  }
 
   fetchAvailableUsers() {
     const usersRef = collection(this.firestore, 'users');

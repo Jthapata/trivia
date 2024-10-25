@@ -1,18 +1,18 @@
-<div>
+<div class="game-container">
   <mat-card *ngIf="loading">Loading...</mat-card>
-  <mat-card *ngIf="!loading">
+  <mat-card *ngIf="!loading" [ngClass]="'player' + currentPlayerIndex">
     <mat-card-header>
       <mat-card-title *ngIf="selectedPlayers && selectedPlayers[currentPlayerIndex]">
           {{selectedPlayers[currentPlayerIndex].email.split('@')[0]}}
       </mat-card-title>
     </mat-card-header>
+    <mat-divider></mat-divider>
     <mat-card-content>
       <app-question [currentQuestion]="currentQuestion"></app-question>
-      <app-answers [currentAnswers]="currentAnswers" (answerSelected)="selectAnswer($event)"></app-answers>
+      <app-answers [currentAnswers]="currentAnswers" [(selectedAnswer)]="selectedAnswer" [correctAnswer]="correctAnswer"></app-answers>
       <app-submit-answer-button (submitAnswer)="submitAnswer()" *ngIf="!submitted"/>
       <app-next-question-button (nextQuestion)="nextButtonClicked()" *ngIf="showNextButton"/>
       <app-finish-game-button (finishGame)="finishGame()" *ngIf="noMoreQuestions"/>
-      <p *ngIf="submitted">{{isAnswerCorrect}}</p>
       <app-game-stats [playersStats]="playersStats"></app-game-stats>
     </mat-card-content>
   </mat-card>
