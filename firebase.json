@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/trivia",
+    "public": "dist/trivia/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
