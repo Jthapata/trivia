@@ -4,7 +4,7 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { firebaseConfig } from './environment/environment';
+import {environment} from "../environments/environment";
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import {FIREBASE_OPTIONS} from "@angular/fire/compat";
 
@@ -13,9 +13,9 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    { provide: FIREBASE_OPTIONS, useValue: firebaseConfig }
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }
     ]
 };
