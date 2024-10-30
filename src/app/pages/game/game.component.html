@@ -5,6 +5,9 @@
       <mat-card-title *ngIf="selectedPlayers && selectedPlayers[currentPlayerIndex]">
           {{selectedPlayers[currentPlayerIndex].email.split('@')[0]}}
       </mat-card-title>
+      <mat-card-content>
+        {{this.currentQuestionIndex}}/{{this.gameSettings.numberOfQuestions}}
+      </mat-card-content>
     </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>

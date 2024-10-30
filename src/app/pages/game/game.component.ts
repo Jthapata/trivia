@@ -49,6 +49,7 @@ export class GameComponent implements OnInit, OnDestroy {
   winners: string[] = [];
   playersStats: PlayerStats[] = [];
   correctAnswer: string = '';
+  currentQuestionIndex = 1;
 
   constructor(
     private gameService: GameService,
@@ -128,6 +129,7 @@ export class GameComponent implements OnInit, OnDestroy {
   nextButtonClicked() {
     this.correctAnswer = '';
     this.selectedAnswer = '';
+    this.currentQuestionIndex += 1;
     this.nextQuestion()
   }
 

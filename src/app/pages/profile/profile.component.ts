@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { Firestore, docData, doc } from '@angular/fire/firestore';
-import { User as FirebaseUser } from '@angular/fire/auth'; 
-import { User as AppUser, User } from '../../interfaces/user';   
+import { User as FirebaseUser } from '@angular/fire/auth';
+import { User as AppUser, User } from '../../interfaces/user';
 import { Observable } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -36,7 +36,6 @@ export class ProfileComponent implements OnInit {
     this.authService.user$.subscribe((user: FirebaseUser | null) => {
       if (user) {
         this.currentUserId = user.uid;
-        console.log('Current User ID:', this.currentUserId);
         this.fetchUserData();
       } else {
         console.error('User not logged in');
@@ -50,10 +49,9 @@ export class ProfileComponent implements OnInit {
     if (this.currentUserId) {
       const userDocRef = doc(this.firestore, 'users', this.currentUserId);
       this.currentUser$ = docData(userDocRef) as Observable<AppUser>;
-  
+
       this.currentUser$.subscribe((userData) => {
         if (userData) {
-          console.log('User Data:', userData);
           this.calculateBestAndWorstCategories(userData);
         } else {
           console.error('No user data found for ID:', this.currentUserId);
