@@ -9,5 +9,5 @@ export const routes: Routes = [
     { path: 'profile', component: ProfileComponent },
     { path: 'game-setup', component: GameSetupComponent },
     { path: 'game', component: GameComponent },
-    { path: 'home', component: HomeComponent },  
+    { path: 'home', redirectTo: '/', pathMatch: 'full' },
 ];

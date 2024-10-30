@@ -32,7 +32,6 @@ import { MatButtonModule } from '@angular/material/button';
     MatCardModule,
     MatDividerModule,
     MatButtonModule
-   
   ],
   templateUrl: './game-setup.component.html',
   styleUrls: ['./game-setup.component.scss'],
@@ -83,7 +82,7 @@ export class GameSetupComponent implements OnInit, OnDestroy {
         this.selectedPlayers = [];
       }
     });
-  }  
+  }
 
   fetchAvailableUsers() {
     const usersRef = collection(this.firestore, 'users');
@@ -157,7 +156,7 @@ export class GameSetupComponent implements OnInit, OnDestroy {
     this.authService.logout().subscribe({
       next: () => {
         console.log('User logged out successfully');
-        this.router.navigate(['/home']); // Redirect to Home Page
+        this.router.navigate(['/']); // Redirect to Home Page
       },
       error: (error) => {
         console.error('Error logging out:', error);

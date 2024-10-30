@@ -109,6 +109,7 @@ export class GameComponent implements OnInit, OnDestroy {
       } else {
         this.playersService.setPlayerStats(currentPlayer.id, currentPlayer.email, 0, 1);
       }
+      this.correctAnswer = this.currentQuestion!.correct_answer;
       this.submitted = true;
       this.questionsService.nextQuestion();
       if (this.questionsService.getCurrentQuestion() === undefined) {
@@ -120,7 +121,6 @@ export class GameComponent implements OnInit, OnDestroy {
           .map(player => player.email);
         return;
       }
-      this.correctAnswer = this.currentQuestion!.correct_answer;
       this.showNextButton = true;
     }
   }
